@@ -1,11 +1,7 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr 10 23:31:55 2020
-
-@author: mathi
-"""
 from tensorflow import keras
 from tensorflow.keras.datasets import mnist
+
+MODEL_PATH = "C:/Users/mathi/Documents/amusement/python/digits_guesser/models/model_conv2d.hdf5"
 
 
 """ Importation des données """
@@ -55,8 +51,7 @@ def build_model():
 
 """ Entrainement """
 model = build_model()
-filepath = "C:/Users/mathi/Documents/amusement/python/digits_guesser/weights/model_conv2d.hdf5"
-checkpoint = keras.callbacks.ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+checkpoint = keras.callbacks.ModelCheckpoint(MODEL_PATH, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
 early_stop = keras.callbacks.EarlyStopping(monitor="val_loss", verbose=1, patience=50, restore_best_weights=True, mode="min")
 model.fit(X_train, y_train, epochs=500, batch_size=128, validation_data=(X_test,y_test), use_multiprocessing=True, callbacks=[early_stop,checkpoint])
 

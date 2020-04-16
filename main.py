@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Apr 13 19:38:49 2020
-
-@author: mathi
-"""
 import numpy as np
 from tkinter import *
 from PIL import Image, ImageDraw
