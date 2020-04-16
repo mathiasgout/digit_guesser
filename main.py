@@ -14,7 +14,7 @@ class PaintApp:
     DRAW = ImageDraw.Draw(IMAGE)
     ICON_MASTER_PATH = "C:/Users/mathi/Documents/amusement/python/digits_guesser/icon_master.ico"
     ICON_PRED_PATH = "C:/Users/mathi/Documents/amusement/python/digits_guesser/icon_pred.ico"
-    MODEL_PATH = "C:/Users/mathi/Documents/amusement/python/digits_guesser/weights/model_conv2d.hdf5"
+    MODEL_PATH = "C:/Users/mathi/Documents/amusement/python/digits_guesser/models/model_conv2d.hdf5"
     
     
     def __init__(self):
