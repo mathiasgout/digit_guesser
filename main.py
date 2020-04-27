@@ -6,7 +6,7 @@ from tensorflow import keras
 
 class PaintApp:
     
-    WIDTH = 280
+    WIDTH = 350
     HEIGHT = WIDTH
     BONUS_HEIGHT = 30
     BORDER_WIDTH = 2
@@ -49,10 +49,10 @@ class PaintApp:
     def paint(self, event):
         """ Fonction pour dessiner """
         color = "black"
-        x1, y1 = (event.x-int(self.HEIGHT/56)), (event.y-int(self.HEIGHT/56))
-        x2, y2 = (event.x+int(self.HEIGHT/56)), (event.y+int(self.HEIGHT/56))
+        x1, y1 = (event.x-int(self.HEIGHT/25)), (event.y-int(self.HEIGHT/25))
+        x2, y2 = (event.x+int(self.HEIGHT/25)), (event.y+int(self.HEIGHT/25))
         self.c.create_oval(x1, y1, x2, y2, fill=color, outline=color)
-        self.DRAW.line([x1, y1, x2, y2], fill="white", width=int(self.HEIGHT/56))
+        self.DRAW.line([x1, y1, x2, y2], fill="white", width=int(self.HEIGHT/25))
         
     def delete(self):
         """ Fonction pour supprimer le dessin et réinitialiser l'image en mémoire """
@@ -72,7 +72,7 @@ class PaintApp:
         # On redimensionne l'image
         self.IMAGE_resized = self.IMAGE.resize((28,28))
         self.IMAGE_resized = np.asarray(self.IMAGE_resized)
-               
+
         # Pour que l'intervalle de la couleur des pixels soit [0,1]
         self.IMAGE_resized = self.IMAGE_resized.astype("float32")
         self.IMAGE_resized = self.IMAGE_resized / 255
@@ -95,7 +95,6 @@ class PaintApp:
         self.result_window.maxsize(self.WIDTH, self.HEIGHT)
         self.result_window.iconbitmap(self.ICON_PRED_PATH)
         self.result_window.config(bg="#D8EEED")
-        
         
         # Affichage de la prédiction
         self.pred = self.model.predict_classes(self.IMAGE_resized)
