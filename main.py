@@ -12,9 +12,9 @@ class PaintApp:
     BORDER_WIDTH = 2
     IMAGE = Image.new("L", (HEIGHT, WIDTH), "black")
     DRAW = ImageDraw.Draw(IMAGE)
-    ICON_MASTER_PATH = "C:/Users/mathi/Documents/amusement/python/digits_guesser/icon_master.ico"
-    ICON_PRED_PATH = "C:/Users/mathi/Documents/amusement/python/digits_guesser/icon_pred.ico"
-    MODEL_PATH = "C:/Users/mathi/Documents/amusement/python/digits_guesser/models/model_conv2d.hdf5"
+    ICON_MASTER_PATH = "icon_master.ico"
+    ICON_PRED_PATH = "icon_pred.ico"
+    MODEL_PATH = "models/model_conv2d.hdf5"
     
     
     def __init__(self):

@@ -1,7 +1,7 @@
 from tensorflow import keras
 from tensorflow.keras.datasets import mnist
 
-MODEL_PATH = "C:/Users/mathi/Documents/amusement/python/digits_guesser/models/model_conv2d.hdf5"
+MODEL_PATH = "models/model_conv2d.hdf5"
 
 
 """ Importation des données """
