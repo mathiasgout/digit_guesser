@@ -12,8 +12,6 @@ class PaintApp:
     BORDER_WIDTH = 2
     IMAGE = Image.new("L", (HEIGHT, WIDTH), "black")
     DRAW = ImageDraw.Draw(IMAGE)
-    ICON_MASTER_PATH = "icon_master.ico"
-    ICON_PRED_PATH = "icon_pred.ico"
     MODEL_PATH = "models/model_conv2d.hdf5"
     
     
@@ -25,7 +23,6 @@ class PaintApp:
         self.master.geometry("{}x{}".format(self.WIDTH+2*self.BORDER_WIDTH, self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH)))
         self.master.minsize(self.WIDTH+2*self.BORDER_WIDTH, self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH))
         self.master.maxsize(self.WIDTH+2*self.BORDER_WIDTH, self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH))
-        self.master.iconbitmap(self.ICON_MASTER_PATH)
         
         # Message de description
         self.description = Label(self.master, text="Draw a digit between 0 and 9", font=("Helvetica", 12, "bold"),  bg="#D8EEED")
@@ -93,7 +90,6 @@ class PaintApp:
         self.result_window.geometry("{}x{}".format(self.WIDTH, self.HEIGHT))
         self.result_window.minsize(self.WIDTH, self.HEIGHT)
         self.result_window.maxsize(self.WIDTH, self.HEIGHT)
-        self.result_window.iconbitmap(self.ICON_PRED_PATH)
         self.result_window.config(bg="#D8EEED")
         
         # Affichage de la prédiction
