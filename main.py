@@ -93,36 +93,34 @@ class PaintApp:
         self.result_window.config(bg="#D8EEED")
         
         # Affichage de la prédiction
-        self.pred = self.model.predict_classes(self.IMAGE_resized)
+        self.pred = self.model.predict(self.IMAGE_resized)
         
         self.message = Label(self.result_window, text="You have drawn a :", font=("Helvetica", int(self.HEIGHT/19), "bold"),  bg="#D8EEED")
         self.message.place(x=0, y=self.HEIGHT/28, height=self.HEIGHT/10, width=self.WIDTH)
         
-        self.pred_mes = Label(self.result_window, text = self.pred[0], font=("Helvetica", int(self.HEIGHT/3), "bold"), bg="#D8EEED", fg="red")
+        self.pred_mes = Label(self.result_window, text = self.pred[0].argmax(), font=("Helvetica", int(self.HEIGHT/3), "bold"), bg="#D8EEED", fg="red")
         self.pred_mes.place(x=0, y=self.HEIGHT/5, height=self.HEIGHT/3, width=self.WIDTH)
         
         # Affichage des probas
-        self.pred_proba = self.model.predict_proba(self.IMAGE_resized)
-        
         self.mes_pred_prob = Label(self.result_window, text="Predicted proba :", font=("Helvetica", int(self.HEIGHT/23), "underline bold"), bg="#D8EEED", anchor="w")
         self.mes_pred_prob.place(x=0, y=self.HEIGHT/1.7, height=self.HEIGHT/10, width=self.WIDTH/2)
         
-        self.first_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred_proba).argsort()[0][0], self.pred_proba[0][(-self.pred_proba).argsort()[0][0]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w", fg="red")
+        self.first_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred).argsort()[0][0], self.pred[0][(-self.pred).argsort()[0][0]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w", fg="red")
         self.first_prob.place(x=self.WIDTH/8, y=self.HEIGHT/1.4, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        self.second_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred_proba).argsort()[0][1], self.pred_proba[0][(-self.pred_proba).argsort()[0][1]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
+        self.second_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred).argsort()[0][1], self.pred[0][(-self.pred).argsort()[0][1]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
         self.second_prob.place(x=5*self.WIDTH/8, y=self.HEIGHT/1.4, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        self.third_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred_proba).argsort()[0][2], self.pred_proba[0][(-self.pred_proba).argsort()[0][2]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
+        self.third_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred).argsort()[0][2], self.pred[0][(-self.pred).argsort()[0][2]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
         self.third_prob.place(x=self.WIDTH/8, y=self.HEIGHT/1.25, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        self.fourth_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred_proba).argsort()[0][3], self.pred_proba[0][(-self.pred_proba).argsort()[0][3]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
+        self.fourth_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred).argsort()[0][3], self.pred[0][(-self.pred).argsort()[0][3]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
         self.fourth_prob.place(x=5*self.WIDTH/8, y=self.HEIGHT/1.25, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        self.fifth_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred_proba).argsort()[0][4], self.pred_proba[0][(-self.pred_proba).argsort()[0][4]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
+        self.fifth_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred).argsort()[0][4], self.pred[0][(-self.pred).argsort()[0][4]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
         self.fifth_prob.place(x=self.WIDTH/8, y=self.HEIGHT/1.13, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        self.sixth_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred_proba).argsort()[0][5], self.pred_proba[0][(-self.pred_proba).argsort()[0][5]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
+        self.sixth_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred).argsort()[0][5], self.pred[0][(-self.pred).argsort()[0][5]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
         self.sixth_prob.place(x=5*self.WIDTH/8, y=self.HEIGHT/1.13, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
         self.result_window.mainloop()
