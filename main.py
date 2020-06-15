@@ -14,34 +14,41 @@ class PaintApp:
     DRAW = ImageDraw.Draw(IMAGE)
     MODEL_PATH = "models/model_conv2d.hdf5"
     
-    
     def __init__(self):
         self.master = Tk()
         
         # Personalisation de la fenêtre
         self.master.title("Digits Guesser")
-        self.master.geometry("{}x{}".format(self.WIDTH+2*self.BORDER_WIDTH, self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH)))
+        self.master.geometry("{}x{}".format(self.WIDTH+2*self.BORDER_WIDTH,
+                                            self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH)))
         self.master.minsize(self.WIDTH+2*self.BORDER_WIDTH, self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH))
         self.master.maxsize(self.WIDTH+2*self.BORDER_WIDTH, self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH))
         
         # Message de description
-        self.description = Label(self.master, text="Draw a digit between 0 and 9", font=("Helvetica", 12, "bold"),  bg="#D8EEED")
+        self.description = Label(self.master,
+                                 text="Draw a digit between 0 and 9",
+                                 font=("Helvetica", 12, "bold"), bg="#D8EEED")
         self.description.place(x=0, y=0, height=self.BONUS_HEIGHT, width=self.WIDTH+2*self.BORDER_WIDTH)
         
         # Boutons
-        self.remove_button = Button(self.master, text="\u274C", borderwidth=1, fg="red", font=("Times", 15, "bold"), command=self.delete)
-        self.remove_button.place(x=0, y=self.BONUS_HEIGHT+self.HEIGHT+2*self.BORDER_WIDTH, height=self.BONUS_HEIGHT, width=self.WIDTH/2+self.BORDER_WIDTH)
+        self.remove_button = Button(self.master, text="REMOVE", borderwidth=1, fg="red", font=("Times", 15, "bold"),
+                                    command=self.delete)
+        self.remove_button.place(x=0, y=self.BONUS_HEIGHT+self.HEIGHT+2*self.BORDER_WIDTH, height=self.BONUS_HEIGHT,
+                                 width=self.WIDTH/2+self.BORDER_WIDTH)
         
-        self.validate_button = Button(self.master, text="\u2714", borderwidth=1, fg="green", font=("Times", 15, "bold"), command=self.image_transformer)
-        self.validate_button.place(x=self.WIDTH/2+self.BORDER_WIDTH, y=self.BONUS_HEIGHT+self.HEIGHT+2*self.BORDER_WIDTH, height=self.BONUS_HEIGHT, width=self.WIDTH/2+self.BORDER_WIDTH)
+        self.validate_button = Button(self.master, text="VALIDATE", borderwidth=1, fg="green",
+                                      font=("Times", 15, "bold"), command=self.image_transformer)
+        self.validate_button.place(x=self.WIDTH/2+self.BORDER_WIDTH,
+                                   y=self.BONUS_HEIGHT+self.HEIGHT+2*self.BORDER_WIDTH, height=self.BONUS_HEIGHT,
+                                   width=self.WIDTH/2+self.BORDER_WIDTH)
         
         # Zone de dessin
-        self.c = Canvas(self.master, bg="white", width=self.WIDTH, height=self.HEIGHT, highlightbackground="black", highlightthickness=self.BORDER_WIDTH)
+        self.c = Canvas(self.master, bg="white", width=self.WIDTH, height=self.HEIGHT,
+                        highlightbackground="black", highlightthickness=self.BORDER_WIDTH)
         self.c.place(x=0, y=self.BONUS_HEIGHT)
         self.c.bind("<B1-Motion>", self.paint)
         
         self.master.mainloop()
-        
         
     def paint(self, event):
         """ Fonction pour dessiner """
@@ -61,13 +68,13 @@ class PaintApp:
         """ Fonction pour transformer l'image dessinée en image 28x28 utilisable comme input """
         # On centre l'image
         boundingbox = self.IMAGE.getbbox()
-        IMAGE_tmp = self.IMAGE.crop(boundingbox)
-        newSize = int((5/4)*max(IMAGE_tmp.size[0], IMAGE_tmp.size[1]))
-        self.IMAGE = Image.new("L", (newSize, newSize), "black") 
-        self.IMAGE.paste(IMAGE_tmp, (int((newSize-IMAGE_tmp.size[0])/2), int((newSize-IMAGE_tmp.size[1])/2)))
+        image_tmp = self.IMAGE.crop(boundingbox)
+        newsize = int((5/4)*max(image_tmp.size[0], image_tmp.size[1]))
+        self.IMAGE = Image.new("L", (newsize, newsize), "black")
+        self.IMAGE.paste(image_tmp, (int((newsize-image_tmp.size[0])/2), int((newsize-image_tmp.size[1])/2)))
         
         # On redimensionne l'image
-        self.IMAGE_resized = self.IMAGE.resize((28,28))
+        self.IMAGE_resized = self.IMAGE.resize((28, 28))
         self.IMAGE_resized = np.asarray(self.IMAGE_resized)
 
         # Pour que l'intervalle de la couleur des pixels soit [0,1]
@@ -93,47 +100,56 @@ class PaintApp:
         self.result_window.config(bg="#D8EEED")
         
         # Affichage de la prédiction
-        self.pred = self.model.predict(self.IMAGE_resized)
+        pred = self.model.predict(self.IMAGE_resized)
         
-        self.message = Label(self.result_window, text="You have drawn a :", font=("Helvetica", int(self.HEIGHT/19), "bold"),  bg="#D8EEED")
-        self.message.place(x=0, y=self.HEIGHT/28, height=self.HEIGHT/10, width=self.WIDTH)
+        message = Label(self.result_window,
+                        text="You have drawn a :",
+                        font=("Helvetica", int(self.HEIGHT/19), "bold"),  bg="#D8EEED")
+        message.place(x=0, y=self.HEIGHT/28, height=self.HEIGHT/10, width=self.WIDTH)
         
-        self.pred_mes = Label(self.result_window, text = self.pred[0].argmax(), font=("Helvetica", int(self.HEIGHT/3), "bold"), bg="#D8EEED", fg="red")
-        self.pred_mes.place(x=0, y=self.HEIGHT/5, height=self.HEIGHT/3, width=self.WIDTH)
+        pred_mes = Label(self.result_window,
+                         text=pred[0].argmax(),
+                         font=("Helvetica", int(self.HEIGHT/3), "bold"), bg="#D8EEED", fg="red")
+        pred_mes.place(x=0, y=self.HEIGHT/5, height=self.HEIGHT/3, width=self.WIDTH)
         
         # Affichage des probas
-        self.mes_pred_prob = Label(self.result_window, text="Predicted proba :", font=("Helvetica", int(self.HEIGHT/23), "underline bold"), bg="#D8EEED", anchor="w")
-        self.mes_pred_prob.place(x=0, y=self.HEIGHT/1.7, height=self.HEIGHT/10, width=self.WIDTH/2)
+        mes_pred_prob = Label(self.result_window,
+                              text="Predicted proba :",
+                              font=("Helvetica", int(self.HEIGHT/23), "underline bold"), bg="#D8EEED", anchor="w")
+        mes_pred_prob.place(x=0, y=self.HEIGHT/1.7, height=self.HEIGHT/10, width=self.WIDTH/2)
         
-        self.first_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred).argsort()[0][0], self.pred[0][(-self.pred).argsort()[0][0]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w", fg="red")
-        self.first_prob.place(x=self.WIDTH/8, y=self.HEIGHT/1.4, height=self.HEIGHT/15, width=3*self.WIDTH/8)
+        first_prob = Label(self.result_window,
+                           text="{0} : {1:.{2}f}".format((-pred).argsort()[0][0], pred[0][(-pred).argsort()[0][0]], 3),
+                           font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w", fg="red")
+        first_prob.place(x=self.WIDTH/8, y=self.HEIGHT/1.4, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        self.second_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred).argsort()[0][1], self.pred[0][(-self.pred).argsort()[0][1]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
-        self.second_prob.place(x=5*self.WIDTH/8, y=self.HEIGHT/1.4, height=self.HEIGHT/15, width=3*self.WIDTH/8)
+        second_prob = Label(self.result_window,
+                            text="{0} : {1:.{2}f}".format((-pred).argsort()[0][1], pred[0][(-pred).argsort()[0][1]], 3),
+                            font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
+        second_prob.place(x=5*self.WIDTH/8, y=self.HEIGHT/1.4, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        self.third_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred).argsort()[0][2], self.pred[0][(-self.pred).argsort()[0][2]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
-        self.third_prob.place(x=self.WIDTH/8, y=self.HEIGHT/1.25, height=self.HEIGHT/15, width=3*self.WIDTH/8)
+        third_prob = Label(self.result_window,
+                           text="{0} : {1:.{2}f}".format((-pred).argsort()[0][2], pred[0][(-pred).argsort()[0][2]], 3),
+                           font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
+        third_prob.place(x=self.WIDTH/8, y=self.HEIGHT/1.25, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        self.fourth_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred).argsort()[0][3], self.pred[0][(-self.pred).argsort()[0][3]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
-        self.fourth_prob.place(x=5*self.WIDTH/8, y=self.HEIGHT/1.25, height=self.HEIGHT/15, width=3*self.WIDTH/8)
+        fourth_prob = Label(self.result_window,
+                            text="{0} : {1:.{2}f}".format((-pred).argsort()[0][3], pred[0][(-pred).argsort()[0][3]], 3),
+                            font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
+        fourth_prob.place(x=5*self.WIDTH/8, y=self.HEIGHT/1.25, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        self.fifth_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred).argsort()[0][4], self.pred[0][(-self.pred).argsort()[0][4]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
-        self.fifth_prob.place(x=self.WIDTH/8, y=self.HEIGHT/1.13, height=self.HEIGHT/15, width=3*self.WIDTH/8)
+        fifth_prob = Label(self.result_window,
+                           text="{0} : {1:.{2}f}".format((-pred).argsort()[0][4], pred[0][(-pred).argsort()[0][4]], 3),
+                           font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
+        fifth_prob.place(x=self.WIDTH/8, y=self.HEIGHT/1.13, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        self.sixth_prob = Label(self.result_window, text="{0} : {1:.{2}f}".format((-self.pred).argsort()[0][5], self.pred[0][(-self.pred).argsort()[0][5]], 3), font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
-        self.sixth_prob.place(x=5*self.WIDTH/8, y=self.HEIGHT/1.13, height=self.HEIGHT/15, width=3*self.WIDTH/8)
+        sixth_prob = Label(self.result_window,
+                           text="{0} : {1:.{2}f}".format((-pred).argsort()[0][5], pred[0][(-pred).argsort()[0][5]], 3),
+                           font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
+        sixth_prob.place(x=5*self.WIDTH/8, y=self.HEIGHT/1.13, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
         self.result_window.mainloop()
         
-        
-        
+
 if __name__ == "__main__":
     paint = PaintApp()
-    
-    
-    
-        
-        
-        
-        
-        

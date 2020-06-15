@@ -54,4 +54,3 @@ model = build_model()
 checkpoint = keras.callbacks.ModelCheckpoint(MODEL_PATH, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
 early_stop = keras.callbacks.EarlyStopping(monitor="val_loss", verbose=1, patience=50, restore_best_weights=True, mode="min")
 model.fit(X_train, y_train, epochs=500, batch_size=128, validation_data=(X_test,y_test), use_multiprocessing=True, callbacks=[early_stop,checkpoint])
-
