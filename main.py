@@ -17,7 +17,7 @@ class PaintApp:
     def __init__(self):
         self.master = Tk()
         
-        # Personalisation de la fenêtre
+        # Personalisation de la 1ere fenêtre
         self.master.title("Digits Guesser")
         self.master.geometry("{}x{}".format(self.WIDTH+2*self.BORDER_WIDTH,
                                             self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH)))
@@ -74,14 +74,14 @@ class PaintApp:
         self.IMAGE.paste(image_tmp, (int((newsize-image_tmp.size[0])/2), int((newsize-image_tmp.size[1])/2)))
         
         # On redimensionne l'image
-        self.IMAGE_resized = self.IMAGE.resize((28, 28))
-        self.IMAGE_resized = np.asarray(self.IMAGE_resized)
+        self.IMAGE = self.IMAGE.resize((28, 28))
+        self.IMAGE = np.asarray(self.IMAGE)
 
         # Pour que l'intervalle de la couleur des pixels soit [0,1]
-        self.IMAGE_resized = self.IMAGE_resized.astype("float32")
-        self.IMAGE_resized = self.IMAGE_resized / 255
+        self.IMAGE = self.IMAGE.astype("float32")
+        self.IMAGE = self.IMAGE / 255
         
-        self.IMAGE_resized = self.IMAGE_resized.reshape(1, 28, 28, 1)
+        self.IMAGE = self.IMAGE.reshape(1, 28, 28, 1)
         
         # Appel de la fonction qui donne la prediction
         self.prediction()
@@ -89,66 +89,66 @@ class PaintApp:
     def prediction(self):
         """ Fonction qui donne la prédiction du chiffre dessiné """
         # Importation du modèle entrainé
-        self.model = keras.models.load_model(self.MODEL_PATH)
+        model = keras.models.load_model(self.MODEL_PATH)
         
         # Création de la nouvelle fenêtre
-        self.result_window = Tk()
-        self.result_window.title("Prediction !")
-        self.result_window.geometry("{}x{}".format(self.WIDTH, self.HEIGHT))
-        self.result_window.minsize(self.WIDTH, self.HEIGHT)
-        self.result_window.maxsize(self.WIDTH, self.HEIGHT)
-        self.result_window.config(bg="#D8EEED")
+        result_window = Tk()
+        result_window.title("Prediction !")
+        result_window.geometry("{}x{}".format(self.WIDTH, self.HEIGHT))
+        result_window.minsize(self.WIDTH, self.HEIGHT)
+        result_window.maxsize(self.WIDTH, self.HEIGHT)
+        result_window.config(bg="#D8EEED")
         
         # Affichage de la prédiction
-        pred = self.model.predict(self.IMAGE_resized)
+        pred = model.predict(self.IMAGE)
         
-        message = Label(self.result_window,
+        message = Label(result_window,
                         text="You have drawn a :",
                         font=("Helvetica", int(self.HEIGHT/19), "bold"),  bg="#D8EEED")
         message.place(x=0, y=self.HEIGHT/28, height=self.HEIGHT/10, width=self.WIDTH)
         
-        pred_mes = Label(self.result_window,
+        pred_mes = Label(result_window,
                          text=pred[0].argmax(),
                          font=("Helvetica", int(self.HEIGHT/3), "bold"), bg="#D8EEED", fg="red")
         pred_mes.place(x=0, y=self.HEIGHT/5, height=self.HEIGHT/3, width=self.WIDTH)
         
         # Affichage des probas
-        mes_pred_prob = Label(self.result_window,
+        mes_pred_prob = Label(result_window,
                               text="Predicted proba :",
                               font=("Helvetica", int(self.HEIGHT/23), "underline bold"), bg="#D8EEED", anchor="w")
         mes_pred_prob.place(x=0, y=self.HEIGHT/1.7, height=self.HEIGHT/10, width=self.WIDTH/2)
         
-        first_prob = Label(self.result_window,
+        first_prob = Label(result_window,
                            text="{0} : {1:.{2}f}".format((-pred).argsort()[0][0], pred[0][(-pred).argsort()[0][0]], 3),
                            font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w", fg="red")
         first_prob.place(x=self.WIDTH/8, y=self.HEIGHT/1.4, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        second_prob = Label(self.result_window,
+        second_prob = Label(result_window,
                             text="{0} : {1:.{2}f}".format((-pred).argsort()[0][1], pred[0][(-pred).argsort()[0][1]], 3),
                             font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
         second_prob.place(x=5*self.WIDTH/8, y=self.HEIGHT/1.4, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        third_prob = Label(self.result_window,
+        third_prob = Label(result_window,
                            text="{0} : {1:.{2}f}".format((-pred).argsort()[0][2], pred[0][(-pred).argsort()[0][2]], 3),
                            font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
         third_prob.place(x=self.WIDTH/8, y=self.HEIGHT/1.25, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        fourth_prob = Label(self.result_window,
+        fourth_prob = Label(result_window,
                             text="{0} : {1:.{2}f}".format((-pred).argsort()[0][3], pred[0][(-pred).argsort()[0][3]], 3),
                             font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
         fourth_prob.place(x=5*self.WIDTH/8, y=self.HEIGHT/1.25, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        fifth_prob = Label(self.result_window,
+        fifth_prob = Label(result_window,
                            text="{0} : {1:.{2}f}".format((-pred).argsort()[0][4], pred[0][(-pred).argsort()[0][4]], 3),
                            font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
         fifth_prob.place(x=self.WIDTH/8, y=self.HEIGHT/1.13, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        sixth_prob = Label(self.result_window,
+        sixth_prob = Label(result_window,
                            text="{0} : {1:.{2}f}".format((-pred).argsort()[0][5], pred[0][(-pred).argsort()[0][5]], 3),
                            font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
         sixth_prob.place(x=5*self.WIDTH/8, y=self.HEIGHT/1.13, height=self.HEIGHT/15, width=3*self.WIDTH/8)
         
-        self.result_window.mainloop()
+        result_window.mainloop()
         
 
 if __name__ == "__main__":
