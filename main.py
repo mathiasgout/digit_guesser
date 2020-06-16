@@ -11,6 +11,7 @@ class PaintApp:
     BONUS_HEIGHT = 30
     BORDER_WIDTH = 2
     IMAGE = Image.new("L", (HEIGHT, WIDTH), "black")
+    IMAGE_resized = Image.new("L", (HEIGHT, WIDTH), "black")
     DRAW = ImageDraw.Draw(IMAGE)
     MODEL_PATH = "models/model_conv2d.hdf5"
     
@@ -70,19 +71,18 @@ class PaintApp:
         boundingbox = self.IMAGE.getbbox()
         image_tmp = self.IMAGE.crop(boundingbox)
         newsize = int((5/4)*max(image_tmp.size[0], image_tmp.size[1]))
-        self.IMAGE = Image.new("L", (newsize, newsize), "black")
-        self.IMAGE.paste(image_tmp, (int((newsize-image_tmp.size[0])/2), int((newsize-image_tmp.size[1])/2)))
-        
+        self.IMAGE_resized.paste(image_tmp, (int((newsize-image_tmp.size[0])/2), int((newsize-image_tmp.size[1])/2)))
+
         # On redimensionne l'image
-        self.IMAGE = self.IMAGE.resize((28, 28))
-        self.IMAGE = np.asarray(self.IMAGE)
+        self.IMAGE_resized = self.IMAGE_resized.resize((28, 28))
+        self.IMAGE_resized = np.asarray(self.IMAGE_resized)
 
         # Pour que l'intervalle de la couleur des pixels soit [0,1]
-        self.IMAGE = self.IMAGE.astype("float32")
-        self.IMAGE = self.IMAGE / 255
+        self.IMAGE_resized = self.IMAGE_resized.astype("float32")
+        self.IMAGE_resized = self.IMAGE_resized / 255
         
-        self.IMAGE = self.IMAGE.reshape(1, 28, 28, 1)
-        
+        self.IMAGE_resized = self.IMAGE_resized.reshape(1, 28, 28, 1)
+
         # Appel de la fonction qui donne la prediction
         self.prediction()
         
@@ -100,7 +100,7 @@ class PaintApp:
         result_window.config(bg="#D8EEED")
         
         # Affichage de la prédiction
-        pred = model.predict(self.IMAGE)
+        pred = model.predict(self.IMAGE_resized)
         
         message = Label(result_window,
                         text="You have drawn a :",
@@ -147,9 +147,13 @@ class PaintApp:
                            text="{0} : {1:.{2}f}".format((-pred).argsort()[0][5], pred[0][(-pred).argsort()[0][5]], 3),
                            font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
         sixth_prob.place(x=5*self.WIDTH/8, y=self.HEIGHT/1.13, height=self.HEIGHT/15, width=3*self.WIDTH/8)
-        
+
+        # Reinitialisation au cas ou plusieur VALIDATE avant un REMOVE
+        self.IMAGE_resized = Image.new("L", (self.HEIGHT, self.WIDTH), "black")
+        self.IMAGE = Image.new("L", (self.HEIGHT, self.WIDTH), "black")
+
         result_window.mainloop()
-        
+
 
 if __name__ == "__main__":
     paint = PaintApp()
