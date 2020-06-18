@@ -14,4 +14,4 @@ This program allows the user to draw a number on the paint app and have a CNN mo
 # Instructions
 
 Run `main.py` to open the paint app.
-<br>Run `model_creation.py` to train your own CNN model. The model is save in the `models` directory.
+<br>Run `model_creation.py` to train your own CNN model. The model is saved in the `models` directory.
