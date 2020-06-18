@@ -5,7 +5,7 @@ MODEL_PATH = "models/model_conv2d.hdf5"
 
 
 def data_preparation():
-    """ Importation et mise en forme des données"""
+    """ Imports and data preparation"""
 
     # Importation des données
     (X_train, y_train), (X_test, y_test) = mnist.load_data()
