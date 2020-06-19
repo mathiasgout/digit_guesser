@@ -1,7 +1,15 @@
+import os
+import datetime
 from tensorflow import keras
 from tensorflow.keras.datasets import mnist
 
-MODEL_PATH = "models/model_conv2d.hdf5"
+# Check if "models" folder exist
+if os.path.exists("models") is False:
+    os.mkdir("models")
+
+# Create model file name based on the current time
+now = datetime.datetime.now().strftime("%Y%d%H%M")
+MODEL_PATH = "models/model_" + now + ".hdf5"
 
 
 def data_preparation():
