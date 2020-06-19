@@ -64,3 +64,5 @@ early_stop = keras.callbacks.EarlyStopping(monitor="val_loss", verbose=1, patien
                                            mode="min")
 model.fit(X_train, y_train, epochs=500, batch_size=128, validation_data=(X_test, y_test), use_multiprocessing=True,
           callbacks=[early_stop, checkpoint])
+
+print("Your model file : {}".format(os.path.join(os.getcwd(), MODEL_PATH)))

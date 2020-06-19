@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from tkinter import *
 from PIL import Image, ImageDraw
@@ -13,8 +14,11 @@ class PaintApp:
     IMAGE = Image.new("L", (HEIGHT, WIDTH), "black")
     IMAGE_resized = Image.new("L", (HEIGHT, WIDTH), "black")
     DRAW = ImageDraw.Draw(IMAGE)
-    MODEL_PATH = "models/model_conv2d.hdf5"
-    
+
+    # Last model in the "models" folder
+    MODEL_PATH = os.path.join("models", os.listdir(os.path.join(os.getcwd()) + "/models")[-1])
+    print("Model used : {}".format(os.path.join(os.getcwd(), MODEL_PATH)))
+
     def __init__(self):
         self.master = Tk()
         
