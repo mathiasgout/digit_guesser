@@ -7,7 +7,7 @@ from tensorflow import keras
 
 class PaintApp:
     
-    WIDTH = 350
+    WIDTH = 500
     HEIGHT = WIDTH
     BONUS_HEIGHT = 30
     BORDER_WIDTH = 2
@@ -113,7 +113,7 @@ class PaintApp:
         
         pred_mes = Label(result_window,
                          text=pred[0].argmax(),
-                         font=("Helvetica", int(self.HEIGHT/3), "bold"), bg="#D8EEED", fg="red")
+                         font=("Helvetica", int(self.HEIGHT/4), "bold"), bg="#D8EEED", fg="red")
         pred_mes.place(x=0, y=self.HEIGHT/5, height=self.HEIGHT/3, width=self.WIDTH)
         
         # Affichage des probas
