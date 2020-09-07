@@ -2,12 +2,13 @@ import os
 import numpy as np
 from tkinter import *
 from PIL import Image, ImageDraw
+import tensorflow as tf
 from tensorflow import keras
 
 
 class PaintApp:
     
-    WIDTH = 500
+    WIDTH = 400
     HEIGHT = WIDTH
     BONUS_HEIGHT = 30
     BORDER_WIDTH = 2
@@ -16,12 +17,18 @@ class PaintApp:
     DRAW = ImageDraw.Draw(IMAGE)
 
     # Last model in the "models" folder
-    MODEL_PATH = os.path.join("models", os.listdir(os.path.join(os.getcwd()) + "/models")[-1])
-    print("Model used : {}".format(os.path.join(os.getcwd(), MODEL_PATH)))
+    DIR_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "models")
+    MODEL_NAME = os.listdir(DIR_PATH)[-1]
+    MODEL_PATH = os.path.join(DIR_PATH, MODEL_NAME)
+    print("Model used : {}".format(MODEL_PATH))
 
+    # Model import
+    model = keras.models.load_model(MODEL_PATH)
+    
     def __init__(self):
+
         self.master = Tk()
-        
+
         # Personalisation de la 1ere fenêtre
         self.master.title("Digits Guesser")
         self.master.geometry("{}x{}".format(self.WIDTH+2*self.BORDER_WIDTH,
@@ -32,7 +39,7 @@ class PaintApp:
         # Message de description
         self.description = Label(self.master,
                                  text="Draw a digit between 0 and 9",
-                                 font=("Helvetica", 12, "bold"), bg="#D8EEED")
+                                 font=("Helvetica", 15, "bold"), bg="#D8EEED")
         self.description.place(x=0, y=0, height=self.BONUS_HEIGHT, width=self.WIDTH+2*self.BORDER_WIDTH)
         
         # Boutons
@@ -92,19 +99,17 @@ class PaintApp:
         
     def prediction(self):
         """ Fonction qui donne la prédiction du chiffre dessiné """
-        # Importation du modèle entrainé
-        model = keras.models.load_model(self.MODEL_PATH)
         
         # Création de la nouvelle fenêtre
         result_window = Tk()
         result_window.title("Prediction !")
-        result_window.geometry("{}x{}".format(self.WIDTH, self.HEIGHT))
+        result_window.geometry("{}x{}+{}+0".format(self.WIDTH, self.HEIGHT, self.WIDTH))
         result_window.minsize(self.WIDTH, self.HEIGHT)
         result_window.maxsize(self.WIDTH, self.HEIGHT)
         result_window.config(bg="#D8EEED")
         
         # Affichage de la prédiction
-        pred = model.predict(self.IMAGE_resized)
+        pred = self.model.predict(self.IMAGE_resized)
         
         message = Label(result_window,
                         text="You have drawn a :",
