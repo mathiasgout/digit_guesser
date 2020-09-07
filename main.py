@@ -31,8 +31,8 @@ class PaintApp:
 
         # Personalisation de la 1ere fenêtre
         self.master.title("Digits Guesser")
-        self.master.geometry("{}x{}".format(self.WIDTH+2*self.BORDER_WIDTH,
-                                            self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH)))
+        self.master.geometry("{}x{}+{}+{}".format(self.WIDTH+2*self.BORDER_WIDTH, 
+                                self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH), self.WIDTH, int(0.5*self.HEIGHT)))
         self.master.minsize(self.WIDTH+2*self.BORDER_WIDTH, self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH))
         self.master.maxsize(self.WIDTH+2*self.BORDER_WIDTH, self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH))
         
@@ -80,9 +80,7 @@ class PaintApp:
         """ Fonction pour transformer l'image dessinée en image 28x28 utilisable comme input """
         # On centre l'image
         boundingbox = self.IMAGE.getbbox()
-        image_tmp = self.IMAGE.crop(boundingbox)
-        newsize = int((5/4)*max(image_tmp.size[0], image_tmp.size[1]))
-        self.IMAGE_resized.paste(image_tmp, (int((newsize-image_tmp.size[0])/2), int((newsize-image_tmp.size[1])/2)))
+        self.IMAGE_resized = self.IMAGE.crop(boundingbox)
 
         # On redimensionne l'image
         self.IMAGE_resized = self.IMAGE_resized.resize((28, 28))
@@ -103,7 +101,7 @@ class PaintApp:
         # Création de la nouvelle fenêtre
         result_window = Tk()
         result_window.title("Prediction !")
-        result_window.geometry("{}x{}+{}+0".format(self.WIDTH, self.HEIGHT, self.WIDTH))
+        result_window.geometry("{}x{}+{}+{}".format(self.WIDTH, self.HEIGHT, int(2.2*self.WIDTH), int(0.5*self.HEIGHT)))
         result_window.minsize(self.WIDTH, self.HEIGHT)
         result_window.maxsize(self.WIDTH, self.HEIGHT)
         result_window.config(bg="#D8EEED")
