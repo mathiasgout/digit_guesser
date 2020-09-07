@@ -1,17 +1,30 @@
-# digits_guesser
+# Digits Guesser
 
-This program allows the user to draw a number on the paint app and have a CNN model take a guess of which digit it is.
-<br>The model is trained with the MNIST Digit data set.
+Un programme Python classifiant les chiffres dessinés à la main par les utilisateurs à l'aide d'un réseau de neuronne à convolution.
+<br>Le modèle est entrainé avec le jeu de données MNIST.
 
-# Requirements
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mathiasgout/digits_guesser/master/images/README_gif.gif">
+</p>
 
-- Python
-- Tensorflow
-- Tkinter
-- Numpy 
-- PIL
+## Instructions
 
-# Instructions
+- `main.py` permet d'ouvrir l'application paint.
+- `train_model.py` permet d'entrainer son propre CNN. Le modèle est sauvegardé dans le dossier `models/`.
 
-Run `main.py` to open the paint app.
-<br>Run `model_creation.py` to train your own CNN model. The model is saved in the `models` directory.
+## Requirements
+
+Les packages suivants sont nécéssaires :
+
+- python>=3.5
+- tensorflow
+- tkinter
+- numpy
+- pillow
+
+### Installation locale
+
+Il possible d'installer les packages en utilisant `pip` :
+```
+$ pip install -r requirements.txt
+```
