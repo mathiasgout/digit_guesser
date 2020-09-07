@@ -80,10 +80,12 @@ class PaintApp:
         """ Fonction pour transformer l'image dessinée en image 28x28 utilisable comme input """
         # On centre l'image
         boundingbox = self.IMAGE.getbbox()
-        self.IMAGE_resized = self.IMAGE.crop(boundingbox)
-
+        image_tmp = self.IMAGE.crop(boundingbox)
+        new_size = (int((5/4)*image_tmp.size[0]), int((5/4)*image_tmp.size[1]))
+        Image.Image.paste(self.IMAGE_resized, image_tmp, (int((self.WIDTH-new_size[0])/2), int((self.WIDTH-new_size[1])/2)))
+        
         # On redimensionne l'image
-        self.IMAGE_resized = self.IMAGE_resized.resize((28, 28))
+        self.IMAGE_resized = self.IMAGE.resize((28, 28))
         self.IMAGE_resized = np.asarray(self.IMAGE_resized)
 
         # Pour que l'intervalle de la couleur des pixels soit [0,1]
