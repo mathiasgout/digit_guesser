@@ -14,7 +14,7 @@ Un programme Python classifiant les chiffres dessinés à la main par les utilis
 
 ## Requirements
 
-Les packages suivants sont nécéssaires :
+Les packages suivants sont nécessaires :
 
 - python>=3.5
 - tensorflow
