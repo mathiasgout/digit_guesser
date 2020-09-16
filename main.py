@@ -192,4 +192,4 @@ class PaintApp:
         self.result_window.destroy()
 
 if __name__ == "__main__":
-    paint = PaintApp()
+    PaintApp()
