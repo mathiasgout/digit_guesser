@@ -22,9 +22,10 @@ class PaintApp:
         self.master = Tk()
 
         # Height and width
-        screen_height = self.master.winfo_screenheight()
-        self.WIDTH, self.HEIGHT = int(screen_height * 0.4), int(screen_height * 0.4)
-        self.BONUS_HEIGHT = int(screen_height * 0.03)
+        self.screen_height = self.master.winfo_screenheight()
+        self.screen_width = self.master.winfo_screenwidth()
+        self.WIDTH, self.HEIGHT = int(self.screen_height * 0.4), int(self.screen_height * 0.4)
+        self.BONUS_HEIGHT = int(self.screen_height * 0.03)
         self.BORDER_WIDTH = 2
 
         # Image config
@@ -34,8 +35,8 @@ class PaintApp:
 
         # Personalisation de la 1ere fenêtre
         self.master.title("Digits Guesser")
-        self.master.geometry("{}x{}+{}+{}".format(self.WIDTH+2*self.BORDER_WIDTH, 
-                                self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH), self.WIDTH, int(0.5*self.HEIGHT)))
+        self.master.geometry("{}x{}+{}+{}".format(self.WIDTH+2*self.BORDER_WIDTH, self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH),
+                             int((self.screen_width-2*self.WIDTH)/2), int((self.screen_height-2*self.HEIGHT)/2)))
         self.master.minsize(self.WIDTH+2*self.BORDER_WIDTH, self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH))
         self.master.maxsize(self.WIDTH+2*self.BORDER_WIDTH, self.HEIGHT+2*(self.BONUS_HEIGHT+self.BORDER_WIDTH))
         
@@ -119,7 +120,8 @@ class PaintApp:
         self.result_window = Tk()
         self.result_window.protocol("WM_DELETE_WINDOW", self._state_normal)
         self.result_window.title("Prediction !")
-        self.result_window.geometry("{}x{}+{}+{}".format(self.WIDTH, self.HEIGHT, int(2.2*self.WIDTH), int(0.5*self.HEIGHT)))
+        self.result_window.geometry("{}x{}+{}+{}".format(self.WIDTH, self.HEIGHT, int(0.6*self.WIDTH + (self.screen_width-self.WIDTH)/2), 
+                                    int((self.screen_height-2*self.HEIGHT)/2)))
         self.result_window.minsize(self.WIDTH, self.HEIGHT)
         self.result_window.maxsize(self.WIDTH, self.HEIGHT)
         self.result_window.config(bg="#D8EEED")
