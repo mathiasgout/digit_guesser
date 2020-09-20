@@ -20,6 +20,7 @@ class PaintApp:
     def __init__(self):
 
         self.master = Tk()
+        self.master.protocol("WM_DELETE_WINDOW", self._close_app)
 
         # Height and width
         self.screen_height = self.master.winfo_screenheight()
@@ -184,6 +185,8 @@ class PaintApp:
     def _state_normal(self):
         """ Enable validate button + paint """
 
+        self.result_window.destroy()
+
         self.remove_button.configure(state="normal")
         
         # delete draw
@@ -191,7 +194,17 @@ class PaintApp:
         self.IMAGE = Image.new("L", (self.WIDTH, self.HEIGHT), "black")
         self.DRAW = ImageDraw.Draw(self.IMAGE)
         self.c.bind("<B1-Motion>", self.paint)
-        self.result_window.destroy()
+
+    def _close_app(self):
+        """ Close prediction window when main window is closed """
+        
+        try:
+            self.result_window.destroy()
+        except:
+            pass
+
+        self.master.destroy()
+
 
 if __name__ == "__main__":
     PaintApp()
