@@ -20,7 +20,6 @@ class PaintApp:
     def __init__(self):
 
         self.master = Tk()
-        self.master.protocol("WM_DELETE_WINDOW", self._close_app)
 
         # Height and width
         self.screen_height = self.master.winfo_screenheight()
@@ -118,7 +117,7 @@ class PaintApp:
         self.c.unbind("<B1-Motion>")
 
         # Création de la nouvelle fenêtre
-        self.result_window = Tk()
+        self.result_window = Toplevel(self.master)
         self.result_window.protocol("WM_DELETE_WINDOW", self._state_normal)
         self.result_window.title("Prediction !")
         self.result_window.geometry("{}x{}+{}+{}".format(self.WIDTH, self.HEIGHT, int(0.6*self.WIDTH + (self.screen_width-self.WIDTH)/2), 
@@ -176,11 +175,9 @@ class PaintApp:
                            font=("Helvetica", int(self.HEIGHT/28), "bold"), bg="#D8EEED", anchor="w")
         sixth_prob.place(x=5*self.WIDTH/8, y=self.HEIGHT/1.13, height=self.HEIGHT/15, width=3*self.WIDTH/8)
 
-        # Reinitialisation au cas ou plusieur VALIDATE avant un REMOVE
+        # Reinitialisation
         self.IMAGE_resized = Image.new("L", (self.HEIGHT, self.WIDTH), "black")
         self.IMAGE = Image.new("L", (self.HEIGHT, self.WIDTH), "black")
-        
-        self.result_window.mainloop()
 
     def _state_normal(self):
         """ Enable validate button + paint """
@@ -194,16 +191,6 @@ class PaintApp:
         self.IMAGE = Image.new("L", (self.WIDTH, self.HEIGHT), "black")
         self.DRAW = ImageDraw.Draw(self.IMAGE)
         self.c.bind("<B1-Motion>", self.paint)
-
-    def _close_app(self):
-        """ Close prediction window when main window is closed """
-        
-        try:
-            self.result_window.destroy()
-        except:
-            pass
-
-        self.master.destroy()
 
 
 if __name__ == "__main__":
